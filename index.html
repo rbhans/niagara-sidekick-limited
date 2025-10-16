@@ -2321,6 +2321,21 @@
                         <i data-lucide="upload" style="width: 16px; height: 16px; margin-right: 12px;"></i>
                         OPEN CSV
                     </button>
+
+                    <!-- BQL Query Info -->
+                    <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 6px; padding: 12px; margin-top: 8px;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                            <i data-lucide="info" style="width: 14px; height: 14px; color: var(--accent-color);"></i>
+                            <span style="font-size: 11px; font-weight: 600; color: var(--accent-color); text-transform: uppercase; letter-spacing: 0.5px;">Niagara BQL Query</span>
+                        </div>
+                        <div style="font-family: 'Monaco', 'Menlo', monospace; font-size: 11px; color: var(--text-secondary); background: rgba(0,0,0,0.3); padding: 8px; border-radius: 4px; word-break: break-all; line-height: 1.4;">
+                            station:|slot:/Drivers|bql:select slotPath, type as 'Point Type', facets from control:ControlPoint
+                        </div>
+                        <button onclick="copyBqlQuery()" style="margin-top: 8px; padding: 6px 10px; background: var(--accent-color); color: white; border: none; border-radius: 4px; font-size: 11px; cursor: pointer; width: 100%; font-weight: 500; transition: var(--transition);" onmouseover="this.style.background='#2563eb'" onmouseout="this.style.background='var(--accent-color)'">
+                            <i data-lucide="copy" style="width: 12px; height: 12px; margin-right: 4px; vertical-align: middle;"></i>
+                            Copy Query
+                        </button>
+                    </div>
                 </div>
 
                 <div style="height: 1px; background: var(--border-color); margin: 0 16px;"></div>
@@ -2811,6 +2826,16 @@
         // File handling
         function openFile() {
             document.getElementById('fileInput').click();
+        }
+
+        function copyBqlQuery() {
+            const query = "station:|slot:/Drivers|bql:select slotPath, type as 'Point Type', facets from control:ControlPoint";
+            navigator.clipboard.writeText(query).then(() => {
+                showToast('BQL query copied to clipboard!', 'success');
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+                showToast('Failed to copy query', 'error');
+            });
         }
         
         async function loadFile(event) {
